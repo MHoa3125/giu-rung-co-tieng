@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Giữ Rừng Có Tiếng | Chung tay bảo vệ tê tê</title>
+  <meta name="description" content="Giữ Rừng Có Tiếng là dự án truyền thông xã hội nâng cao nhận thức về bảo vệ động vật hoang dã, tập trung vào tê tê. Trang crowdfunding mô phỏng phục vụ học tập.">
+  <meta name="theme-color" content="#1f5a43">
+
+  <!-- Open Graph cơ bản -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Giữ Rừng Có Tiếng | Chung tay bảo vệ tê tê">
+  <meta property="og:description" content="Dự án truyền thông xã hội về bảo vệ tê tê và động vật hoang dã. Trang crowdfunding mô phỏng phục vụ học tập.">
+  <meta property="og:locale" content="vi_VN">
+
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename=c.images.logo) }}">
+  <!-- Font tròn thân thiện (cần internet; offline sẽ tự dùng font hệ thống) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <a class="skip-link" href="#main">Bỏ qua điều hướng</a>
+
+  <!-- ================= HEADER ================= -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="Giữ Rừng Có Tiếng – về đầu trang">
+        <img src="{{ url_for('static', filename=c.images.logo) }}" alt="" width="40" height="40">
+        <span>GIỮ RỪNG CÓ TIẾNG</span>
+      </a>
+
+      <span class="now-reading" id="now-reading" aria-hidden="true"></span>
+
+      <nav class="main-nav" id="main-nav" aria-label="Điều hướng chính">
+        <ul>
+          <li><a href="#about">Về dự án</a></li>
+          <li><a href="#meet">Tê tê</a></li>
+          <li><a href="#problem">Vấn đề</a></li>
+          <li><a href="#goal">Mục tiêu</a></li>
+          <li><a href="#funds">Sử dụng vốn</a></li>
+          <li><a href="#rewards">Phần quà</a></li>
+        </ul>
+        <button type="button" class="btn btn-accent nav-cta" data-open-donate>Ủng hộ dự án</button>
+      </nav>
+
+      <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Mở menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ================= HERO ================= -->
+    <!-- Đổi ảnh nền: sửa c.images.hero_bg trong app.py -->
+    <section class="hero" style="--hero-image: url('{{ url_for('static', filename=c.images.hero_bg) }}')">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Dự án truyền thông xã hội · Bảo vệ động vật hoang dã</p>
+          <!-- HEADLINE: dễ sửa chữ tại đây -->
+          <h1>
+            <span class="h1-line">Giữ rừng có tiếng</span>
+            <span class="h1-sub">Chung tay bảo vệ tê tê</span>
+          </h1>
+          <p class="lead">
+            Tê tê là loài động vật hoang dã đang đối mặt với nguy cơ từ săn bắt và buôn bán trái phép.
+            Mỗi hành động nhỏ của cộng đồng đều góp phần bảo vệ tê tê và hệ sinh thái quanh chúng ta.
+          </p>
+
+          <div class="hero-progress" aria-label="Tiến độ gọi vốn">
+            <div class="hero-progress-top">
+              <div>
+                <span class="small-label">Đã đạt (mô phỏng)</span>
+                <strong class="big-number" data-current-amount>{{ c.current_amount|vnd }}</strong>
+              </div>
+              <div class="right">
+                <span class="small-label">Mục tiêu gọi vốn</span>
+                <strong>{{ c.target_amount|vnd }}</strong>
+              </div>
+            </div>
+            <div class="progress" role="progressbar" aria-label="Tiến độ gọi vốn" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ c.initial_percent }}" data-progress-track>
+              <div class="progress-bar" data-progress-bar style="width: {{ c.initial_percent }}%"></div>
+            </div>
+            <p class="progress-meta"><strong data-percent>{{ c.initial_percent }}%</strong> mục tiêu · <span data-status>Dự án đang gọi vốn</span></p>
+          </div>
+
+          <div class="hero-actions">
+            <button type="button" class="btn btn-accent btn-lg" data-open-donate>Ủng hộ dự án</button>
+            <a class="btn btn-ghost btn-lg" href="#about">Tìm hiểu dự án</a>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+          <!-- Đổi ảnh tê tê: sửa c.images.pangolin trong app.py -->
+          <img src="{{ url_for('static', filename=c.images.pangolin) }}" alt="Tranh vẽ gia đình tê tê đáng yêu quây quần bên nhau" width="1100" height="731">
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VỀ DỰ ÁN ================= -->
+    <section class="section has-roam" id="about" data-nav="#about" data-label="Về dự án">
+      <div class="container narrow-head">
+        <p class="eyebrow dark">Về dự án</p>
+        <h2>Một dự án để cộng đồng cùng lên tiếng vì tê tê</h2>
+        <p class="section-lead">
+          “Giữ Rừng Có Tiếng” là dự án truyền thông xã hội nhằm nâng cao nhận thức về bảo vệ động vật hoang dã,
+          tập trung vào tê tê. Trang này là một <strong>trang crowdfunding mô phỏng</strong>, giúp giới thiệu vấn đề,
+          kêu gọi cộng đồng đóng góp và trình bày các phần quà kỹ thuật số.
+        </p>
+      </div>
+      <div class="container cards-3">
+        <article class="card reveal">
+          <svg class="icon" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#d4ebc8" stroke="#3b2a1e" stroke-width="3"/><path d="M16 46 C16 26 30 16 48 16 C48 34 38 46 16 46Z" fill="#4f9a5f" stroke="#3b2a1e" stroke-width="3" stroke-linejoin="round"/><path d="M16 46 L38 24" stroke="#3b2a1e" stroke-width="3" stroke-linecap="round"/></svg>
+          <h3>Đối tượng bảo vệ</h3>
+          <p>Tê tê (Pangolin) – loài thú hoang dã cần được cộng đồng quan tâm và bảo vệ.</p>
+        </article>
+        <article class="card reveal">
+          <svg class="icon" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#fdecc8" stroke="#3b2a1e" stroke-width="3"/><path d="M16 27 H26 L42 17 V47 L26 37 H16Z" fill="#f6b73c" stroke="#3b2a1e" stroke-width="3" stroke-linejoin="round"/><path d="M22 37 L25 48 H31 L29 39" fill="#fff" stroke="#3b2a1e" stroke-width="3" stroke-linejoin="round"/><path d="M48 26 q5 6 0 12" fill="none" stroke="#3b2a1e" stroke-width="3" stroke-linecap="round"/></svg>
+          <h3>Hình thức</h3>
+          <p>Truyền thông và giáo dục cộng đồng, kết hợp video kêu gọi và các sản phẩm kỹ thuật số.</p>
+        </article>
+        <article class="card reveal">
+          <svg class="icon" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f9d6d3" stroke="#3b2a1e" stroke-width="3"/><path d="M32 49 C14 38 14 22 24 20 C28 19 31 22 32 25 C33 22 36 19 40 20 C50 22 50 38 32 49Z" fill="#f2a4a0" stroke="#3b2a1e" stroke-width="3" stroke-linejoin="round"/></svg>
+          <h3>Cách tham gia</h3>
+          <p>Ủng hộ theo mức 30.000 VNĐ hoặc 70.000 VNĐ và nhận phần quà tương ứng (mô phỏng).</p>
+        </article>
+      </div>
+        <!-- Tê tê "hiện hình" khi cuộn tới (chỉ desktop). Đổi ảnh: thay file trong static/images/pangolin/roam/ -->
+    <img class="roam roam-right roam-flip" src="{{ url_for('static', filename='images/pangolin/roam/hat.png') }}" alt="" aria-hidden="true" loading="lazy" width="140" height="170" style="--w: 140px">
+    </section>
+
+    <!-- ================= TÊ TÊ LÀ AI? ================= -->
+    <!-- Nội dung đã đối chiếu: WWF, WCS Việt Nam (xem mục Nguồn tham khảo cuối trang) -->
+    <section class="section section-cream" id="meet" data-nav="#meet" data-label="Tê tê là ai?">
+      <div class="container narrow-head">
+        <p class="eyebrow">Tê tê là ai?</p>
+        <h2>Bạn biết gì về tê tê ngoài lớp vảy?</h2>
+        <p class="section-lead">Trước khi nói chuyện bảo vệ, hãy cùng làm quen với chú thú nhỏ kín đáo này nhé.</p>
+      </div>
+      <div class="container fact-grid">
+        <article class="fact-card reveal">
+          <svg class="fact-icon" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#d4ebc8" stroke="#3b2a1e" stroke-width="3"/><g fill="#8a5a3c" stroke="#3b2a1e" stroke-width="2.5"><ellipse cx="19" cy="38" rx="7" ry="6"/><ellipse cx="31" cy="36" rx="5" ry="4.5"/><ellipse cx="43" cy="33" rx="8" ry="6.5"/></g><path d="M31 40 L26 49 M31 40 L33 50 M31 40 L39 48 M49 28 L54 22 M50 31 L56 28" fill="none" stroke="#3b2a1e" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <h3>Thực khách của kiến và mối</h3>
+          <p>Tê tê ăn kiến, mối và cả ấu trùng của chúng. Chúng không có răng nên dùng chiếc lưỡi dài và dính để bắt mồi.</p>
+        </article>
+        <article class="fact-card reveal">
+          <svg class="fact-icon" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#fdecc8" stroke="#3b2a1e" stroke-width="3"/><circle cx="32" cy="33" r="19" fill="#b98a5e" stroke="#3b2a1e" stroke-width="3"/><path d="M20 30 q5 6 10 0 M30 30 q5 6 10 0 M25 39 q5 6 10 0 M24 22 q4 5 8 0 M33 22 q4 5 8 0 M18 39 q4 5 8 0 M36 39 q4 5 8 0" fill="none" stroke="#3b2a1e" stroke-width="2.2" stroke-linecap="round"/></svg>
+          <h3>Cuộn tròn như quả bóng</h3>
+          <p>Khi gặp nguy hiểm, tê tê cuộn tròn người lại, để lớp vảy bao phủ ra bên ngoài.</p>
+        </article>
+        <article class="fact-card reveal">
+          <svg class="fact-icon" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f9d6d3" stroke="#3b2a1e" stroke-width="3"/><path d="M32 12 C47 19 49 39 32 53 C15 39 17 19 32 12Z" fill="#c99d6e" stroke="#3b2a1e" stroke-width="3" stroke-linejoin="round"/><path d="M32 20 V46 M24 26 Q32 34 40 26 M23 36 Q32 44 41 36" fill="none" stroke="#3b2a1e" stroke-width="2.2" stroke-linecap="round"/></svg>
+          <h3>Vảy làm từ keratin</h3>
+          <p>Lớp vảy được cấu tạo từ keratin, cùng loại chất tạo nên tóc và móng tay của chúng ta.</p>
+        </article>
+        <article class="fact-card reveal">
+          <svg class="fact-icon" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#cfe0f2" stroke="#3b2a1e" stroke-width="3"/><path d="M38 13 A19 19 0 1 0 51 40 A15 15 0 1 1 38 13Z" fill="#f6b73c" stroke="#3b2a1e" stroke-width="3" stroke-linejoin="round"/><circle cx="48" cy="20" r="2.6" fill="#fff" stroke="#3b2a1e" stroke-width="1.6"/><circle cx="53" cy="30" r="1.8" fill="#fff" stroke="#3b2a1e" stroke-width="1.4"/></svg>
+          <h3>Cú đêm kín đáo</h3>
+          <p>Tê tê hoạt động chủ yếu vào ban đêm và thường sống đơn độc. Chúng kín đáo đến mức các nhà nghiên cứu cũng khó theo dõi.</p>
+        </article>
+      </div>
+      <div class="container">
+        <div class="species-banner reveal">
+          <img src="{{ url_for('static', filename='images/pangolin/pangolin-standing.png') }}" alt="Tranh vẽ chú tê tê đứng thẳng bằng hai chân sau" loading="lazy" width="412" height="419">
+          <div>
+            <h3>Ở Việt Nam có hai loài tê tê</h3>
+            <p>Tê tê Java sống ở phía Nam và tê tê vàng sống ở phía Bắc. Cả hai loài đều được Liên minh Bảo tồn Thiên nhiên Quốc tế (IUCN) xếp ở mức <strong>cực kỳ nguy cấp</strong>.</p>
+            <p class="src-tag">Nguồn: <a href="#sources">WCS Việt Nam</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VẤN ĐỀ ================= -->
+    <section class="section has-roam" id="problem" data-nav="#problem" data-label="Vấn đề">
+      <div class="container narrow-head">
+        <p class="eyebrow dark">Vấn đề bảo vệ tê tê</p>
+        <h2>Vì sao tê tê cần được bảo vệ?</h2>
+        <p class="section-lead">
+          Tê tê là động vật hoang dã sống kín đáo, ăn côn trùng như kiến và mối.
+          Bảo vệ tê tê là góp phần bảo vệ hệ sinh thái và động vật hoang dã nói chung.
+        </p>
+      </div>
+      <div class="container problem-grid">
+        <article class="problem-card reveal">
+          <span class="num">01</span>
+          <h3>Nguy cơ từ săn bắt</h3>
+          <p>Tê tê đang đối mặt với nguy cơ bị săn bắt, đe dọa sự tồn tại của loài trong tự nhiên.</p>
+        </article>
+        <article class="problem-card reveal">
+          <span class="num">02</span>
+          <h3>Buôn bán trái phép</h3>
+          <p>Hoạt động buôn bán trái phép tiếp tay cho việc săn bắt và gây áp lực lên quần thể tê tê.</p>
+        </article>
+        <article class="problem-card reveal">
+          <span class="num">03</span>
+          <h3>Cần nâng cao nhận thức</h3>
+          <p>Khi cộng đồng hiểu rõ hơn về tê tê, việc bảo vệ loài sẽ nhận được sự đồng hành rộng rãi hơn.</p>
+        </article>
+        <article class="problem-card reveal">
+          <span class="num">04</span>
+          <h3>Hành động nhỏ, tác động tích cực</h3>
+          <p>Chia sẻ thông tin, lan tỏa thông điệp hay ủng hộ dự án đều là những cách đóng góp cho thay đổi.</p>
+        </article>
+      </div>
+        <!-- Tê tê "hiện hình" khi cuộn tới (chỉ desktop). Đổi ảnh: thay file trong static/images/pangolin/roam/ -->
+    <img class="roam roam-left roam-flip" src="{{ url_for('static', filename='images/pangolin/roam/walk.png') }}" alt="" aria-hidden="true" loading="lazy" width="210" height="198" style="--w: 210px">
+    </section>
+
+    <!-- ================= HIỂU LẦM THƯỜNG GẶP (thẻ lật) ================= -->
+    <section class="section section-cream" id="myths" data-nav="#meet" data-label="Hiểu lầm thường gặp">
+      <div class="container narrow-head">
+        <p class="eyebrow">Hiểu lầm thường gặp</p>
+        <h2>Hiểu lầm hay sự thật?</h2>
+        <p class="section-lead">Chạm vào từng thẻ để lật xem sự thật.</p>
+      </div>
+      <div class="container flip-grid">
+        <!-- Mỗi thẻ: mặt trước = hiểu lầm, mặt sau = sự thật. Sửa chữ trực tiếp tại đây. -->
+        <button type="button" class="flip reveal" aria-pressed="false" aria-label="Thẻ 1: lật để xem sự thật">
+          <span class="flip-inner">
+            <span class="face face-front"><span class="tag tag-myth">Hiểu lầm</span><span class="face-text">“Vảy tê tê là vị thuốc quý, chữa được nhiều bệnh.”</span><span class="hint">Chạm để lật ↻</span></span>
+            <span class="face face-back" aria-hidden="true"><span class="tag tag-fact">Sự thật</span><span class="face-text">Vảy tê tê làm từ keratin, giống tóc và móng tay. Theo Phó giáo sư Nguyễn Thị Bay (ĐH Y Dược TP.HCM), hiện không có nghiên cứu khoa học nào khẳng định vảy tê tê chữa được bệnh.</span><span class="hint">Nguồn: VietnamNet</span></span>
+          </span>
+        </button>
+        <button type="button" class="flip reveal" aria-pressed="false" aria-label="Thẻ 2: lật để xem sự thật">
+          <span class="flip-inner">
+            <span class="face face-front"><span class="tag tag-myth">Hiểu lầm</span><span class="face-text">“Tê tê có vảy nên là loài bò sát.”</span><span class="hint">Chạm để lật ↻</span></span>
+            <span class="face face-back" aria-hidden="true"><span class="tag tag-fact">Sự thật</span><span class="face-text">Tê tê là động vật có vú, dù cơ thể được phủ một lớp vảy.</span><span class="hint">Nguồn: WWF</span></span>
+          </span>
+        </button>
+        <button type="button" class="flip reveal" aria-pressed="false" aria-label="Thẻ 3: lật để xem sự thật">
+          <span class="flip-inner">
+            <span class="face face-front"><span class="tag tag-myth">Hiểu lầm</span><span class="face-text">“Tê tê nhai kiến bằng hàm răng chắc khoẻ.”</span><span class="hint">Chạm để lật ↻</span></span>
+            <span class="face face-back" aria-hidden="true"><span class="tag tag-fact">Sự thật</span><span class="face-text">Tê tê không có răng. Chúng bắt kiến và mối bằng chiếc lưỡi dài, dính.</span><span class="hint">Nguồn: WWF</span></span>
+          </span>
+        </button>
+        <button type="button" class="flip reveal" aria-pressed="false" aria-label="Thẻ 4: lật để xem sự thật">
+          <span class="flip-inner">
+            <span class="face face-front"><span class="tag tag-myth">Hiểu lầm</span><span class="face-text">“Chỉ người đi săn mới làm hại tê tê.”</span><span class="hint">Chạm để lật ↻</span></span>
+            <span class="face face-back" aria-hidden="true"><span class="tag tag-fact">Sự thật</span><span class="face-text">Nhu cầu tiêu thụ thịt, vảy và các sản phẩm từ tê tê cũng thúc đẩy việc săn bắt và buôn bán trái phép. Không mua, không dùng chính là một cách bảo vệ chúng.</span><span class="hint">Nguồn: WWF</span></span>
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= CÂU CHUYỆN CỦA DỰ ÁN ================= -->
+    <section class="story after-cream has-roam" id="story" data-nav="#problem" data-label="Câu chuyện">
+      <div class="container story-grid">
+        <div class="story-media reveal">
+          <!-- Đổi ảnh: c.images.story trong app.py -->
+          <img src="{{ url_for('static', filename=c.images.story) }}" alt="Cảnh rừng lúc hoàng hôn, minh hoạ cho câu chuyện của dự án" loading="lazy" width="600" height="450">
+        </div>
+        <div class="story-copy reveal">
+          <p class="eyebrow">Câu chuyện của dự án</p>
+          <h2>Bắt đầu từ một câu hỏi</h2>
+          <p>
+            Video kêu gọi của “Giữ Rừng Có Tiếng” mở đầu bằng hình ảnh một chú tê tê cuộn mình và câu hỏi:
+            <strong>“Bạn biết gì về tê tê ngoài lớp vảy?”</strong>
+          </p>
+          <p>
+            Dự án chọn tê tê làm loài đại diện để có một đối tượng cụ thể và nội dung nhất quán. Dự án hướng đến sinh viên và người trẻ,
+            những người mới làm quen với chủ đề bảo tồn. Vì vậy mỗi sản phẩm đảm nhận một việc: video thu hút sự chú ý, hình nền giữ thông điệp
+            trong đời sống hằng ngày, e-book cung cấp kiến thức, còn trang này kể trọn câu chuyện và cách tham gia.
+          </p>
+          <blockquote>Bảo vệ tê tê là góp phần bảo vệ hệ sinh thái và động vật hoang dã.</blockquote>
+          <p>Thông tin trên trang được đối chiếu từ các nguồn đáng tin cậy và có ghi nguồn ở cuối trang.</p>
+        </div>
+      </div>
+        <!-- Tê tê "hiện hình" khi cuộn tới (chỉ desktop). Đổi ảnh: thay file trong static/images/pangolin/roam/ -->
+    <img class="roam roam-right" src="{{ url_for('static', filename='images/pangolin/roam/curled-teal.png') }}" alt="" aria-hidden="true" loading="lazy" width="160" height="173" style="--w: 160px">
+    </section>
+
+    <!-- ================= BẠN CÓ THỂ LÀM GÌ? ================= -->
+    <section class="section has-roam" id="act" data-nav="#problem" data-label="Bạn có thể làm gì?">
+      <div class="container narrow-head">
+        <p class="eyebrow dark">Bạn có thể làm gì?</p>
+        <h2>Bảo vệ tê tê bắt đầu từ những việc nhỏ</h2>
+        <p class="section-lead">Ủng hộ bằng tiền chỉ là một cách. Những việc dưới đây không tốn đồng nào, bạn hãy chọn việc phù hợp với mình.</p>
+      </div>
+      <div class="container problem-grid">
+        <article class="problem-card act-card reveal">
+          <span class="num">1</span>
+          <h3>Nói không với sản phẩm từ động vật hoang dã</h3>
+          <p>Không mua, không sử dụng và không tiêu thụ thịt, vảy hay các sản phẩm làm từ động vật hoang dã.</p>
+        </article>
+        <article class="problem-card act-card reveal">
+          <span class="num">2</span>
+          <h3>Không tiếp tay cho buôn bán trái phép</h3>
+          <p>Không mua bán, rao bán hay quảng cáo động vật hoang dã. Nếu phát hiện vi phạm, bạn có thể gọi đường dây nóng miễn phí <a class="tel" href="tel:18001522">1800 1522</a> của Trung tâm Giáo dục Thiên nhiên (ENV).</p>
+        </article>
+        <article class="problem-card act-card reveal">
+          <span class="num">3</span>
+          <h3>Tìm hiểu và chia sẻ</h3>
+          <p>Đọc thêm về tê tê và kể lại cho bạn bè, người thân những điều bạn vừa biết. Mỗi lần chia sẻ là một lần thông điệp đến gần mọi người hơn.</p>
+        </article>
+        <article class="problem-card act-card act-featured reveal">
+          <span class="num">4</span>
+          <h3>Đồng hành cùng dự án</h3>
+          <p>Nếu có điều kiện, bạn có thể ủng hộ dự án theo khả năng của mình và nhận quà kỹ thuật số.</p>
+          <button type="button" class="btn btn-accent" data-open-donate>Ủng hộ dự án</button>
+        </article>
+      </div>
+        <!-- Tê tê "hiện hình" khi cuộn tới (chỉ desktop). Đổi ảnh: thay file trong static/images/pangolin/roam/ -->
+    <img class="roam roam-left roam-flip" src="{{ url_for('static', filename='images/pangolin/roam/run.png') }}" alt="" aria-hidden="true" loading="lazy" width="190" height="174" style="--w: 190px">
+    </section>
+
+    <!-- ================= MỤC TIÊU + TIẾN ĐỘ ================= -->
+    <section class="section section-tight-top has-roam" id="goal" data-nav="#goal" data-label="Mục tiêu">
+      <div class="container narrow-head">
+        <p class="eyebrow dark">Mục tiêu &amp; tiến độ gọi vốn</p>
+        <h2>Mục tiêu gọi vốn: {{ c.target_amount|vnd }}</h2>
+        <p class="section-lead">Đây là mục tiêu <strong>mô phỏng</strong> phục vụ mục đích học tập/demo.</p>
+      </div>
+      <div class="container">
+        <div class="goal-card reveal">
+          <div class="goal-numbers">
+            <div>
+              <span class="small-label">Đã đạt (mô phỏng)</span>
+              <strong class="big-number" data-current-amount>{{ c.current_amount|vnd }}</strong>
+            </div>
+            <div>
+              <span class="small-label">Còn lại</span>
+              <strong data-remaining>{{ (c.target_amount - c.current_amount)|vnd }}</strong>
+            </div>
+            <div>
+              <span class="small-label">Tiến độ</span>
+              <strong data-percent>{{ c.initial_percent }}%</strong>
+            </div>
+          </div>
+          <div class="progress progress-lg" role="progressbar" aria-label="Tiến độ gọi vốn" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ c.initial_percent }}" data-progress-track>
+            <div class="progress-bar" data-progress-bar style="width: {{ c.initial_percent }}%"></div>
+          </div>
+          <p class="progress-meta"><span data-status>Dự án đang gọi vốn</span> · Mục tiêu {{ c.target_amount|vnd }}</p>
+          <div class="goal-cta">
+            <button type="button" class="btn btn-accent btn-lg" data-open-donate>Ủng hộ dự án</button>
+          </div>
+        </div>
+      </div>
+        <!-- Tê tê "hiện hình" khi cuộn tới (chỉ desktop). Đổi ảnh: thay file trong static/images/pangolin/roam/ -->
+    <img class="roam roam-right" src="{{ url_for('static', filename='images/pangolin/roam/sit.png') }}" alt="" aria-hidden="true" loading="lazy" width="150" height="177" style="--w: 150px">
+    </section>
+
+    <!-- ================= SỬ DỤNG NGUỒN VỐN ================= -->
+    <section class="section section-cream has-roam" id="funds" data-nav="#funds" data-label="Sử dụng vốn">
+      <div class="container narrow-head">
+        <p class="eyebrow dark">Sử dụng nguồn vốn</p>
+        <h2>Nguồn vốn được sử dụng như thế nào?</h2>
+        <p class="section-lead">Tổng nguồn vốn {{ c.target_amount|vnd }} được phân bổ vào ba nhóm.</p>
+      </div>
+      <div class="container funds-grid">
+        <div class="donut-wrap reveal">
+          <div class="donut" style="background: {{ c.donut_gradient }}" role="img"
+               aria-label="Biểu đồ phân bổ: {% for f in c.funds %}{{ f.label }} {{ f.percent }}%{% if not loop.last %}, {% endif %}{% endfor %}">
+            <div class="donut-hole"><strong>{{ c.target_amount|num }}</strong><span>VNĐ</span></div>
+          </div>
+        </div>
+        <div class="fund-list">
+          {% for f in c.funds %}
+          <article class="fund-card reveal" style="--fund-color: {{ f.color }}">
+            <div class="fund-head">
+              <span class="dot" aria-hidden="true"></span>
+              <h3>{{ f.label }}</h3>
+              <span class="pct">{{ f.percent }}%</span>
+            </div>
+            <p class="fund-amount">{{ f.amount|vnd }}</p>
+            <div class="fund-bar" aria-hidden="true"><span style="width: {{ f.percent }}%"></span></div>
+            <p class="fund-desc">{{ f.desc }}</p>
+          </article>
+          {% endfor %}
+        </div>
+      </div>
+        <!-- Tê tê "hiện hình" khi cuộn tới (chỉ desktop). Đổi ảnh: thay file trong static/images/pangolin/roam/ -->
+    <img class="roam roam-left roam-flip" src="{{ url_for('static', filename='images/pangolin/roam/flat-stand.png') }}" alt="" aria-hidden="true" loading="lazy" width="150" height="154" style="--w: 150px">
+    </section>
+
+    <!-- ================= VIDEO ================= -->
+    <section class="section" id="video" data-nav="#funds" data-label="Video">
+      <div class="container narrow-head">
+        <p class="eyebrow dark">Video kêu gọi</p>
+        <h2>Video truyền thông của dự án</h2>
+        <p class="section-lead">Thời lượng dự kiến {{ c.video.duration }}.</p>
+      </div>
+      <div class="container">
+        <div class="video-frame reveal">
+          {% if c.has_video %}
+          <!-- Video thật: đặt file vào static/video/ (tên mặc định campaign.mp4, xem app.py) -->
+          <video controls preload="none" poster="{{ url_for('static', filename=c.video.poster) }}">
+            <source src="{{ url_for('static', filename=c.video.file) }}" type="video/mp4">
+            Trình duyệt của bạn không hỗ trợ phát video.
+          </video>
+          {% else %}
+          <!-- PLACEHOLDER: chưa có file video. Thêm static/video/campaign.mp4 để tự động hiển thị player -->
+          <div class="video-placeholder" style="--poster: url('{{ url_for('static', filename=c.video.poster) }}')">
+            <div class="play" aria-hidden="true"><svg viewBox="0 0 24 24" width="34" height="34"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></div>
+            <p class="vp-title">Video kêu gọi “Giữ Rừng Có Tiếng”</p>
+            <p class="vp-sub">Video sẽ được cập nhật sau · {{ c.video.duration }}</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CÁC MỨC ĐÓNG GÓP ================= -->
+    <section class="section section-cream" id="tiers" data-nav="#rewards" data-label="Mức ủng hộ">
+      <div class="container narrow-head">
+        <p class="eyebrow dark">Các mức đóng góp</p>
+        <h2>Chọn mức đồng hành của bạn</h2>
+        <p class="section-lead">Hai mức đóng góp, mỗi mức kèm phần quà kỹ thuật số tương ứng.</p>
+      </div>
+      <div class="container tiers-grid">
+        {% for t in c.tiers %}
+        <article class="tier-card reveal{% if t.featured %} featured{% endif %}">
+          {% if t.badge %}<span class="badge">{{ t.badge }}</span>{% endif %}
+          <p class="tier-label">{{ t.label }}</p>
+          <p class="tier-amount">{{ t.amount|vnd }}</p>
+          <ul class="check-list">
+            {% for r in t.rewards %}<li>{{ r }}</li>{% endfor %}
+          </ul>
+          <button type="button" class="btn {% if t.featured %}btn-accent{% else %}btn-primary{% endif %} btn-block" data-open-donate data-tier="{{ t.id }}">
+            Chọn mức {{ t.amount|vnd }}
+          </button>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- ================= PHẦN QUÀ ================= -->
+    <section class="section" id="rewards" data-nav="#rewards" data-label="Phần quà">
+      <div class="container narrow-head">
+        <p class="eyebrow dark">Phần quà</p>
+        <h2>Những phần quà kỹ thuật số</h2>
+        <p class="section-lead">
+          Website chỉ giới thiệu phần quà, không có hệ thống gửi quà tự động.
+          Hình ảnh dưới đây là <strong>ảnh minh hoạ tạm</strong>, sẽ được thay bằng sản phẩm thật.
+        </p>
+      </div>
+      <div class="container">
+        <div class="reward-block reveal">
+          <div class="reward-head">
+            <h3>Gói {{ c.tiers[0].amount|vnd }}</h3>
+            <span class="pill">Bộ 3 hình nền điện thoại</span>
+          </div>
+          <!-- Đổi ảnh wallpaper: c.images.wallpapers trong app.py -->
+          <div class="phones">
+            {% for w in c.images.wallpapers %}
+            <figure class="phone">
+              <img src="{{ url_for('static', filename=w) }}" alt="Xem trước hình nền điện thoại số {{ loop.index }}" loading="lazy" width="270" height="585">
+              <figcaption>Hình nền {{ loop.index }}</figcaption>
+            </figure>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="reward-block plus reveal">
+          <div class="reward-head">
+            <h3>Gói {{ c.tiers[1].amount|vnd }}</h3>
+            <span class="pill pill-accent">Gồm toàn bộ quà gói 30.000 VNĐ + E-book</span>
+          </div>
+          <div class="ebook-row">
+            <figure class="ebook">
+              <!-- Đổi bìa e-book: c.images.ebook_cover trong app.py -->
+              <img src="{{ url_for('static', filename=c.images.ebook_cover) }}" alt="Xem trước bìa e-book Làm quen với tê tê" loading="lazy" width="280" height="392">
+            </figure>
+            <div class="ebook-copy">
+              <h4>E-book “Làm quen với tê tê”</h4>
+              <p>Tài liệu giúp bạn làm quen với tê tê – đối tượng mà dự án “Giữ Rừng Có Tiếng” muốn cộng đồng cùng quan tâm và bảo vệ.</p>
+              <ul class="check-list">
+                <li>Bộ 3 hình nền điện thoại</li>
+                <li>E-book “Làm quen với tê tê”</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CTA ================= -->
+    <section class="cta" id="cta" data-nav="#rewards" data-label="Đồng hành">
+      <div class="container cta-inner reveal">
+        <!-- Đổi ảnh: c.images.pangolin_cta trong app.py -->
+        <div class="cta-sticker"><img src="{{ url_for('static', filename=c.images.pangolin_cta) }}" alt="Tranh vẽ chú tê tê cuộn tròn dễ thương" loading="lazy" width="374" height="400"></div>
+        <h2>Cùng giữ cho khu rừng còn tiếng nói</h2>
+        <p>Chỉ cần một hành động nhỏ, bạn đã góp phần lan tỏa thông điệp bảo vệ tê tê.</p>
+        <button type="button" class="btn btn-accent btn-lg" data-open-donate>Ủng hộ dự án</button>
+      </div>
+    </section>
+
+    <!-- ================= HƯỚNG DẪN ỦNG HỘ ================= -->
+    <section class="section has-roam" id="how" data-nav="#rewards" data-label="Cách hoạt động">
+      <div class="container narrow-head">
+        <p class="eyebrow dark">Hướng dẫn ủng hộ</p>
+        <h2>Ủng hộ trong 3 bước</h2>
+        <p class="section-lead">Chỉ mất vài phút để đồng hành cùng dự án.</p>
+      </div>
+      <div class="container steps">
+        <div class="step reveal"><span class="step-num">1</span><h3>Chọn mức ủng hộ</h3><p>Nhấn “Ủng hộ dự án”, sau đó chọn 30.000 VNĐ hoặc 70.000 VNĐ.</p></div>
+        <div class="step reveal"><span class="step-num">2</span><h3>Chuyển khoản</h3><p>Quét mã hoặc chuyển khoản theo thông tin hiển thị, nhớ ghi đúng nội dung chuyển khoản.</p></div>
+        <div class="step reveal"><span class="step-num">3</span><h3>Xác nhận “Tôi đã ủng hộ”</h3><p>Hệ thống đối chiếu giao dịch, cập nhật tiến độ gọi vốn và gửi lời cảm ơn đến bạn.</p></div>
+      </div>
+        <!-- Tê tê "hiện hình" khi cuộn tới (chỉ desktop). Đổi ảnh: thay file trong static/images/pangolin/roam/ -->
+    <img class="roam roam-right roam-flip" src="{{ url_for('static', filename='images/pangolin/roam/curled-pink.png') }}" alt="" aria-hidden="true" loading="lazy" width="160" height="167" style="--w: 160px">
+    </section>
+    <!-- ================= NGUỒN THAM KHẢO & LƯU Ý ================= -->
+    <section class="section section-cream" id="sources" data-nav="#rewards" data-label="Nguồn tham khảo">
+      <div class="container narrow-head">
+        <p class="eyebrow">Nguồn tham khảo</p>
+        <h2>Thông tin được lấy từ đâu?</h2>
+      </div>
+      <div class="container">
+        <div class="sources-box reveal">
+          <ol class="src-list">
+            <li><a href="https://www.worldwildlife.org/our-work/wildlife/wildlife-cafe/meet-the-pangolin-amazing-facts-about-earths-unique-scaley-mammal/" target="_blank" rel="noopener">WWF – Meet the pangolin: amazing facts about Earth’s unique scaly mammal</a>: thức ăn, cách tự vệ, vảy keratin, tập tính, nhu cầu tiêu thụ thúc đẩy buôn bán trái phép.</li>
+            <li><a href="https://programs.wcs.org/vietnam/en-us/Wildlife/Pangolin.aspx" target="_blank" rel="noopener">WCS Việt Nam – Pangolin</a>: hai loài tê tê ở Việt Nam và tình trạng bảo tồn theo IUCN.</li>
+            <li><a href="https://vietnamnet.vn/vay-te-te-khong-phai-la-than-duoc-cho-dan-ong-2221030.html" target="_blank" rel="noopener">VietnamNet (30/11/2023) – Vảy tê tê không phải “thần dược” cho đàn ông</a>: ý kiến chuyên gia ĐH Y Dược TP.HCM về công dụng của vảy tê tê.</li>
+            <li><a href="https://en.qdnd.vn/social-affairs/news/wildlife-conservation-film-calls-on-public-to-report-crimes-against-animals-565973" target="_blank" rel="noopener">Quân đội nhân dân (14/05/2024)</a> và <a href="https://voh.com.vn/xa-hoi/nam-2018-giai-cuu-hang-tram-dong-vat-hoang-da-qua-duong-day-nong-1800-1522-306521.html" target="_blank" rel="noopener">VOH (12/02/2019)</a>: đường dây nóng 1800-1522 của ENV để báo tin vi phạm về động vật hoang dã.</li>
+          </ol>
+          <ul class="src-notes">
+            <li>Thông tin về tê tê trên trang nhằm mục đích giáo dục và nâng cao nhận thức.</li>
+            <li>Hình ảnh trên trang là tranh minh hoạ, không phải ảnh tư liệu về tình trạng hay hoạt động cứu hộ thực tế của tê tê.</li>
+            <li>Một phần ý tưởng nội dung được phác thảo với sự hỗ trợ của công cụ AI, sau đó được chọn lọc, chỉnh sửa và đối chiếu với các nguồn ở trên.</li>
+          </ul>
+          <!-- TODO: ghi nguồn/ tác giả của các hình ảnh đã dùng (tê tê hero, tê tê cuộn tròn, tê tê đứng) tại đây nếu cần -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="{{ url_for('static', filename=c.images.logo) }}" alt="" width="40" height="40">
+        <strong>GIỮ RỪNG CÓ TIẾNG</strong>
+      </div>
+      <p class="footer-note">
+        <strong>Đây là dự án mô phỏng phục vụ mục đích học tập/demo</strong>, không phải nền tảng gọi vốn thật.
+        Mọi số tiền, thông tin chuyển khoản và tiến độ trên trang đều là dữ liệu giả lập.
+      </p>
+      <!-- Sửa/xoá dòng dưới nếu cần: thông tin học phần -->
+      <p class="footer-sub">Sản phẩm học tập · Môn Truyền hình · Khoa Khoa học Xã hội, Đại học Quốc tế Hồng Bàng</p>
+      <ul class="footer-links">
+        <li><a href="#about">Về dự án</a></li>
+        <li><a href="#meet">Tê tê</a></li>
+        <li><a href="#problem">Vấn đề</a></li>
+        <li><a href="#goal">Mục tiêu</a></li>
+        <li><a href="#funds">Sử dụng vốn</a></li>
+        <li><a href="#rewards">Phần quà</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Thanh đáy (chỉ mobile): tiến độ + nút ủng hộ luôn trong tầm ngón cái -->
+  <div class="dock" id="dock">
+    <a class="dock-progress" href="#goal" aria-label="Xem tiến độ gọi vốn">
+      <span class="dock-top"><strong data-percent>{{ c.initial_percent }}%</strong> <span class="dock-amount"><span data-current-amount>{{ c.current_amount|vnd }}</span> / {{ c.target_amount|num }}</span></span>
+      <span class="dock-track"><span class="dock-bar" data-progress-bar style="width: {{ c.initial_percent }}%"></span></span>
+    </a>
+    <button type="button" class="btn btn-accent dock-btn" data-open-donate>Ủng hộ</button>
+  </div>
+
+  <!-- ================= MODAL ỦNG HỘ (4 bước) ================= -->
+  <div class="modal-backdrop" id="donate-modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button type="button" class="modal-close" data-close-donate aria-label="Đóng hộp thoại">×</button>
+
+      <div class="modal-goal" aria-hidden="true">
+        <span class="mg-bar"><span class="dock-bar" data-progress-bar style="width: {{ c.initial_percent }}%"></span></span>
+        <span class="mg-text"><strong data-percent>{{ c.initial_percent }}%</strong> mục tiêu</span>
+      </div>
+
+      <ol class="stepper" aria-label="Các bước ủng hộ">
+        <li data-stepper="1" class="active"><span>Chọn mức</span></li>
+        <li data-stepper="2"><span>Chuyển khoản</span></li>
+        <li data-stepper="3"><span>Xác nhận</span></li>
+        <li data-stepper="4"><span>Hoàn tất</span></li>
+      </ol>
+
+      <!-- Bước 1: chọn mức -->
+      <section class="modal-step" data-step="1">
+        <h2 id="modal-title" tabindex="-1">Chọn mức ủng hộ</h2>
+        <p class="modal-sub">Chọn mức bạn muốn đồng hành cùng dự án.</p>
+        <div class="tier-options" role="radiogroup" aria-label="Mức ủng hộ">
+          {% for t in c.tiers %}
+          <label class="tier-option">
+            <input type="radio" name="tier" value="{{ t.id }}">
+            <span class="tier-option-body">
+              <span class="to-amount">{{ t.amount|vnd }}</span>
+              <span class="to-rewards">{{ t.rewards|join(' + ') }}</span>
+              {% if t.badge %}<span class="badge small">{{ t.badge }}</span>{% endif %}
+            </span>
+          </label>
+          {% endfor %}
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost-dark" data-close-donate>Để sau</button>
+          <button type="button" class="btn btn-accent" id="btn-next" disabled>Tiếp tục</button>
+        </div>
+      </section>
+
+      <!-- Bước 2: thông tin chuyển khoản -->
+      <section class="modal-step" data-step="2" hidden>
+        <h2 tabindex="-1">Thông tin chuyển khoản</h2>
+        <p class="pay-timer" id="pay-timer-chip">Mã giao dịch còn hiệu lực <strong id="pay-timer">10:00</strong></p>
+
+        <div class="pay-layout">
+          <div class="qr-card">
+            <div id="qr-box" aria-live="off"></div>
+            <p class="qr-note">Quét mã bằng ứng dụng ngân hàng</p>
+          </div>
+
+          <dl class="pay-info">
+            <div class="pay-row"><dt>Ngân hàng</dt><dd>{{ c.payment.bank_name }}</dd></div>
+            <div class="pay-row"><dt>Chủ tài khoản</dt><dd>{{ c.payment.account_name }}</dd></div>
+            <div class="pay-row">
+              <dt>Số tài khoản</dt>
+              <dd><span id="pay-account" data-raw="{{ c.payment.account_number|replace(' ', '') }}">{{ c.payment.account_number }}</span>
+                <button type="button" class="copy-btn" data-copy-from="#pay-account" aria-label="Sao chép số tài khoản">Sao chép</button></dd>
+            </div>
+            <div class="pay-row">
+              <dt>Số tiền</dt>
+              <dd><strong id="pay-amount">–</strong>
+                <button type="button" class="copy-btn" data-copy-from="#pay-amount" aria-label="Sao chép số tiền">Sao chép</button></dd>
+            </div>
+            <div class="pay-row">
+              <dt>Nội dung CK</dt>
+              <dd><strong id="pay-memo" class="memo">–</strong>
+                <button type="button" class="copy-btn" data-copy-from="#pay-memo" aria-label="Sao chép nội dung chuyển khoản">Sao chép</button></dd>
+            </div>
+          </dl>
+        </div>
+
+        <p class="pay-hint">Vui lòng nhập <strong>đúng nội dung chuyển khoản</strong> để dự án ghi nhận đóng góp của bạn.</p>
+
+        <div class="modal-actions" id="pay-actions">
+          <button type="button" class="btn btn-ghost-dark" id="btn-back">Quay lại</button>
+          <button type="button" class="btn btn-accent" id="btn-confirm">Tôi đã ủng hộ</button>
+        </div>
+
+        <div class="pay-expired" id="pay-expired" hidden>
+          <p><strong>Mã giao dịch đã hết hạn.</strong> Vui lòng tạo mã mới để tiếp tục ủng hộ.</p>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-ghost-dark" data-close-donate>Đóng</button>
+            <button type="button" class="btn btn-accent" id="btn-renew">Tạo mã mới</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bước 3: đang xác nhận giao dịch -->
+      <section class="modal-step processing" data-step="3" hidden>
+        <div class="spinner" aria-hidden="true"></div>
+        <h2 tabindex="-1">Đang xác nhận giao dịch…</h2>
+        <p class="modal-sub">Vui lòng chờ trong giây lát, không đóng cửa sổ này.</p>
+        <ol class="verify-list" id="verify-list" aria-live="polite">
+          <li><span class="tick" aria-hidden="true"></span>Đang kết nối với ngân hàng</li>
+          <li><span class="tick" aria-hidden="true"></span>Đã nhận được giao dịch chuyển khoản</li>
+          <li><span class="tick" aria-hidden="true"></span>Đối chiếu nội dung chuyển khoản</li>
+        </ol>
+      </section>
+
+      <!-- Bước 4: thành công + biên nhận -->
+      <section class="modal-step success" data-step="4" hidden>
+        <div class="success-icon" aria-hidden="true">✓</div>
+        <h2 tabindex="-1">Cảm ơn bạn đã đồng hành cùng Giữ Rừng Có Tiếng!</h2>
+        <p class="modal-sub">Giao dịch của bạn đã được ghi nhận thành công.</p>
+
+        <dl class="summary receipt">
+          <div><dt>Trạng thái</dt><dd class="ok">Thành công</dd></div>
+          <div><dt>Mã giao dịch</dt><dd id="rc-id">–</dd></div>
+          <div><dt>Thời gian</dt><dd id="rc-time">–</dd></div>
+          <div><dt>Số tiền</dt><dd id="rc-amount">–</dd></div>
+          <div><dt>Nội dung CK</dt><dd id="rc-memo">–</dd></div>
+          <div><dt>Phần quà</dt><dd id="rc-rewards">–</dd></div>
+        </dl>
+
+        <!-- Quà tải về: JS đổ danh sách theo mức đã ủng hộ (cấu hình ở app.py: GIFT_*) -->
+        <div class="gift-box" id="gift-box">
+          <h3>Quà của bạn</h3>
+          <ul class="gift-list" id="gift-list"></ul>
+        </div>
+
+        <div class="progress" role="progressbar" aria-label="Tiến độ gọi vốn" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ c.initial_percent }}" data-progress-track>
+          <div class="progress-bar" data-progress-bar style="width: {{ c.initial_percent }}%"></div>
+        </div>
+        <p class="progress-meta dark"><strong data-current-amount>{{ c.current_amount|vnd }}</strong> / {{ c.target_amount|vnd }} · <strong data-percent>{{ c.initial_percent }}%</strong></p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost-dark" data-close-donate>Đóng</button>
+          <button type="button" class="btn btn-primary" id="btn-view-progress">Xem tiến độ</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Cấu hình demo từ app.py (nguồn dữ liệu duy nhất) -->
+  <script id="campaign-config" type="application/json">{{ c.js_config|tojson }}</script>
+  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</body>
+</html>
