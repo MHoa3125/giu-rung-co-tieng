@@ -463,22 +463,15 @@ blockquote { margin: 24px 0; padding: 18px 22px; background: var(--paper); color
   .site-header.reading .brand { flex: none; }
 }
 
-/* ---------- 18e. TÊ TÊ "HIỆN HÌNH" KHI CUỘN (chỉ desktop) ---------- */
+/* ---------- 18e. TÊ TÊ CHẠY CHÉO KHI CUỘN (chỉ desktop) ---------- */
+/* Mỗi con chạy chéo qua nội dung section của nó rồi nằm ở góc dưới trái/phải màn hình cho tới section có tê tê kế tiếp.
+   Ảnh dùng position: fixed; vị trí do JS tính theo thanh cuộn (biến --x, --y, --r, --o). */
 .roam { display: none; }
 @media (min-width: 1025px) {
-  section.has-roam { padding-bottom: 190px; overflow-x: clip; }
-  .roam { display: block; position: absolute; bottom: 2px; z-index: 3; width: var(--w, 160px); height: auto; pointer-events: none; user-select: none; filter: drop-shadow(0 6px 0 rgba(59, 42, 30, .18)); }
-  .roam-right { right: 5%; }
-  .roam-left { left: 5%; }
-  .roam-flip { scale: -1 1; }                 /* quay mặt vào giữa trang */
-  /* Trạng thái ẩn: nằm ngoài mép, nghiêng nhẹ. Khi vào tầm nhìn thì trượt vào và nảy nhẹ. */
-  .js-reveal .roam { opacity: 0; transition: opacity .35s ease, translate .9s cubic-bezier(.34, 1.45, .5, 1), rotate .9s cubic-bezier(.34, 1.45, .5, 1); }
-  .js-reveal .roam-right { translate: 240px 0; rotate: 10deg; }
-  .js-reveal .roam-left { translate: -240px 0; rotate: -10deg; }
-  .js-reveal .roam.in { opacity: 1; translate: 0 0; rotate: 0deg; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .js-reveal .roam, .js-reveal .roam.in { opacity: 1; translate: 0 0; rotate: 0deg; transition: none; }
+  .roam { display: block; position: fixed; left: 0; top: 0; z-index: 3; width: var(--w, 150px); height: auto; pointer-events: none; user-select: none;
+    opacity: var(--o, 0); translate: var(--x, 0px) var(--y, 0px); rotate: var(--r, 0deg); will-change: translate, rotate, opacity;
+    filter: drop-shadow(0 6px 0 rgba(59, 42, 30, .18)); }
+  .roam-flip { scale: -1 1; }   /* ảnh gốc quay mặt ngược hướng đi -> lật lại */
 }
 
 /* ---------- 19. TOAST ---------- */

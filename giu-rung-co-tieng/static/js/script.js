@@ -414,6 +414,48 @@
   const roamEls = $$('.roam');   // tê tê đứng ở đáy một số section (chỉ hiện trên desktop, xem CSS 18e)
   let spyTicking = false;
 
+  /**
+   * Tê tê chạy chéo ngang qua nội dung của section chứa nó khi cuộn, rồi NẰM Ở GÓC DƯỚI trái/phải cho tới section có tê tê kế tiếp.
+   * p (0..1) = mức cuộn qua section: 0 khi mép trên section vừa chạm đáy màn hình, 1 khi mép dưới section chạm đáy màn hình.
+   *   p≈0: nằm ở góc dưới (bên xuất phát) · 0<p<1: chạy chéo sang góc dưới bên đối diện · p=1: nằm ở góc đó và ở lại.
+   * Mọi vị trí là hàm của p trong toạ độ màn hình (ảnh dùng position: fixed), nên cuộn ngược lại cũng đúng.
+   * Khi section có tê tê kế tiếp bắt đầu, con trước mờ đi ngay tại chỗ và con sau hiện ra (đổi dáng) rồi chạy tiếp.
+   */
+  const clamp01 = (v) => Math.min(1, Math.max(0, v));
+  const footerEl = $('.site-footer');
+  function updateRoam() {
+    if (window.innerWidth < 1025) return;               // mobile/tablet: CSS đã ẩn
+    const vh = window.innerHeight, W = window.innerWidth;
+    const m = (W - Math.min(1160, W - 40)) / 2;         // bề rộng lề trống hai bên nội dung
+    const ps = roamEls.map((el) => {
+      const r = el.parentElement.getBoundingClientRect();
+      return clamp01((vh - r.top) / r.height);
+    });
+    const footFade = footerEl ? clamp01((footerEl.getBoundingClientRect().top - vh * 0.6) / (vh * 0.3)) : 1;
+    roamEls.forEach((el, i) => {
+      const p = ps[i];
+      const s = clamp01((p - 0.1) / 0.8);               // nghỉ một chút ở hai đầu, chạy ở giữa
+      const w = el.offsetWidth, h = el.offsetHeight;
+      // Nằm trong lề trống; lề hẹp thì thò một phần ra ngoài mép màn hình để ít đè nội dung
+      const side = Math.max(-0.6 * w, Math.min(W * 0.04, m - w - 8));
+      const xLeft = side, xRight = W - w - side;
+      const rl = el.dataset.dir === 'rl';
+      const x = rl ? xRight + (xLeft - xRight) * s : xLeft + (xRight - xLeft) * s;
+      const moving = s > 0 && s < 1 && !prefersReducedMotion;
+      const roller = el.hasAttribute('data-roll');
+      const arc = Math.sin(Math.PI * s) * vh * 0.07;    // vọt lên theo đường chéo rồi hạ xuống góc đối diện
+      const hop = moving && !roller ? Math.abs(Math.sin(s * Math.PI * 10)) * 12 : 0;
+      const rot = prefersReducedMotion ? 0 : roller ? (rl ? -1 : 1) * s * 540 : Math.sin(s * Math.PI * 10) * 3;
+      const feet = vh - 8 - arc;                       // chân tê tê sát đáy màn hình
+      const next = i + 1 < ps.length ? ps[i + 1] : 0;
+      const o = (p <= 0 ? 0 : Math.min(1, p / 0.12)) * (1 - clamp01(next / 0.15)) * footFade;
+      el.style.setProperty('--x', x.toFixed(1) + 'px');
+      el.style.setProperty('--y', (feet - h - hop).toFixed(1) + 'px');
+      el.style.setProperty('--r', rot.toFixed(1) + 'deg');
+      el.style.setProperty('--o', o.toFixed(2));
+    });
+  }
+
   function updateSpy() {
     spyTicking = false;
     const line = window.innerHeight * 0.38;
@@ -433,11 +475,7 @@
     nowReading.textContent = current ? current.dataset.label : '';
     header.classList.toggle('reading', !!current);
 
-    // Tê tê hiện hình: khi đáy section (chỗ tê tê đứng) lọt vào màn hình thì trượt vào; cuộn đi thì thu lại để lần sau hiện lại
-    roamEls.forEach((el) => {
-      const bottom = el.parentElement.getBoundingClientRect().bottom;
-      el.classList.toggle('in', bottom < window.innerHeight + 10 && bottom > 200);
-    });
+    updateRoam();
 
     // Thanh đáy mobile: hiện sau khi cuộn qua hero (hero đã có tiến độ + nút riêng)
     const hero = $('.hero');
