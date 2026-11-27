@@ -21,6 +21,17 @@ app = Flask(__name__)
 GIFT_WALLPAPERS = [{"label": f"Hình nền điện thoại {i}", "kind": "image"} for i in (1, 2, 3)]
 GIFT_EBOOK = {"label": "E-book “Làm quen với tê tê”", "kind": "ebook"}
 
+
+# --- ẢNH PHẦN "CÂU CHUYỆN" (ví dụ: poster của dự án / ảnh thật) ---
+# Đặt ảnh vào static/images/story/ với tên "story-poster" (đuôi .jpg / .jpeg / .png / .webp đều được) -> trang tự dùng ảnh đó.
+# Muốn đổi ảnh khác: thay file này (giữ tên) hoặc sửa "file" bên dưới. Không có file -> dùng lại ảnh vẽ minh hoạ cũ.
+# "credit" = nguồn/tác giả hiển thị dưới ảnh (để trống "" nếu là ảnh của chính bạn).
+STORY_IMAGE = {
+    "file": "images/story/story-poster",   # không cần ghi đuôi file
+    "alt": "Poster “Tê tê Java – khi lớp vảy bảo vệ trở thành lời cầu cứu” kêu gọi nói không với động vật hoang dã",
+    "credit": "Poster: Bảo tàng Thiên nhiên Duyên hải miền Trung (Sở Khoa học và Công nghệ TP. Huế)",
+}
+
 CAMPAIGN = {
     "name": "Giữ Rừng Có Tiếng",
     "subject": "Tê tê (Pangolin)",
@@ -76,7 +87,7 @@ CAMPAIGN = {
     # Muốn đổi ảnh: thay file cùng tên, hoặc sửa đường dẫn tại đây.
     "images": {
         "logo": "images/logo/logo.svg",
-        "hero_bg": "images/hero/hero.svg",                    # ảnh nền hero (rừng)
+        "hero_bg": "images/hero/forest-bg",                   # ảnh nền hero: đặt forest-bg.jpg (hoặc .png/.webp) vào static/images/hero/. Không có ảnh -> dùng tranh vẽ cũ hero.svg
         "pangolin": "images/pangolin/pangolin-hero.png",      # ảnh tê tê chính (hero)
         "pangolin_cta": "images/pangolin/pangolin-curled.png", # tê tê cuộn tròn (khối kêu gọi)
         "story": "images/pangolin/forest-story.svg",          # ảnh phần Câu chuyện
@@ -89,7 +100,7 @@ CAMPAIGN = {
     },
     "video": {
         "file": "video/campaign.mp4",       # đặt video thật vào static/video/
-        "poster": "images/hero/hero.svg",   # ảnh bìa video (tuỳ chọn)
+        "poster": "images/hero/hero.svg",   # ảnh bìa dự phòng; ảnh bìa chính: đặt video-poster.jpg vào static/images/video/
         "duration": "khoảng 2 phút",
     },
 }
@@ -108,6 +119,26 @@ def format_vnd(value):
 def format_num(value):
     """2850000 -> '2.850.000'"""
     return f"{int(value):,}".replace(",", ".")
+
+
+def _find_static_image(base):
+    """Tìm ảnh theo tên (không cần đuôi): static/<base>.(jpg|jpeg|png|webp).
+    Chịu được tên file bị thừa đuôi (vd. forest-bg.jpg.jpg do Windows ẩn đuôi) hoặc có thêm hậu tố như "forest-bg (1).jpg".
+    Trả về đường dẫn tính từ static/ hoặc None."""
+    folder = os.path.join(app.static_folder, os.path.dirname(base))
+    stem = os.path.basename(base)
+    if not os.path.isdir(folder):
+        return None
+    exts = (".jpg", ".jpeg", ".png", ".webp")
+    names = sorted(os.listdir(folder))
+    # ưu tiên tên chuẩn, sau đó mới tới tên có thừa đuôi/hậu tố
+    for name in names:
+        if name.lower() in [stem.lower() + e for e in exts]:
+            return os.path.join(os.path.dirname(base), name).replace(os.sep, "/")
+    for name in names:
+        if name.lower().startswith(stem.lower()) and name.lower().endswith(exts):
+            return os.path.join(os.path.dirname(base), name).replace(os.sep, "/")
+    return None
 
 
 def _percent(part, total):
@@ -130,6 +161,22 @@ def build_context():
     # Video: chỉ hiển thị player khi file thật tồn tại
     video_path = os.path.join(app.static_folder, CAMPAIGN["video"]["file"])
     c["has_video"] = os.path.isfile(video_path)
+
+    # Ảnh nền hero: dùng ảnh người dùng đặt nếu có, không thì tranh vẽ cũ (để nền không bao giờ trống)
+    c["images"] = {**CAMPAIGN["images"],
+                   "hero_bg": _find_static_image(CAMPAIGN["images"]["hero_bg"]) or "images/hero/hero.svg"}
+
+    # Ảnh bìa video: dùng ảnh người dùng đặt (static/images/video/video-poster.jpg) nếu có, không thì ảnh cũ trong CAMPAIGN["video"]
+    c["video_poster"] = _find_static_image("images/video/video-poster") or CAMPAIGN["video"]["poster"]
+
+    # Ảnh phần Câu chuyện: dùng ảnh người dùng đặt (poster/ảnh thật) nếu có, không thì ảnh vẽ cũ
+    custom = _find_static_image(STORY_IMAGE["file"])
+    c["story_image"] = {
+        "src": custom or CAMPAIGN["images"]["story"],
+        "custom": bool(custom),
+        "alt": STORY_IMAGE["alt"] if custom else "Cảnh rừng lúc hoàng hôn, minh hoạ cho câu chuyện của dự án",
+        "credit": STORY_IMAGE["credit"] if custom else "",
+    }
 
     # Quà hiển thị sau khi ủng hộ (chỉ cần nhãn)
     def _downloads(items):
