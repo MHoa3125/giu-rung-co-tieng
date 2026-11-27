@@ -525,3 +525,15 @@
     });
   }
 })();
+
+
+/* Nút phát tam giác trên khung TV: ẩn khi video chạy, hiện lại khi tạm dừng/kết thúc */
+(function () {
+  var btn = document.querySelector('.tv-play');
+  var vid = document.querySelector('.tv-screen video');
+  if (!btn || !vid) return;
+  btn.addEventListener('click', function () { vid.play(); });
+  vid.addEventListener('play', function () { btn.hidden = true; });
+  vid.addEventListener('pause', function () { btn.hidden = false; });
+  vid.addEventListener('ended', function () { btn.hidden = false; });
+})();

@@ -387,24 +387,39 @@
       <div class="container narrow-head">
         <p class="eyebrow dark">Video kêu gọi</p>
         <h2>Video truyền thông của dự án</h2>
-        <p class="section-lead">Thời lượng dự kiến {{ c.video.duration }}.</p>
+        <p class="section-lead">Hãy cùng lắng nghe câu chuyện của tê tê, loài vật hiền lành đang cần được bảo vệ.</p>
       </div>
       <div class="container">
-        <div class="video-frame reveal">
-          {% if c.has_video %}
-          <!-- Video thật: đặt file vào static/video/ (tên mặc định campaign.mp4, xem app.py) -->
-          <video controls preload="none" poster="{{ url_for('static', filename=c.video_poster) }}">
-            <source src="{{ url_for('static', filename=c.video.file) }}" type="video/mp4">
-            Trình duyệt của bạn không hỗ trợ phát video.
-          </video>
-          {% else %}
-          <!-- PLACEHOLDER: chưa có file video. Thêm static/video/campaign.mp4 để tự động hiển thị player -->
-          <div class="video-placeholder" style="--poster: url('{{ url_for('static', filename=c.video_poster) }}')">
-            <div class="play" aria-hidden="true"><svg viewBox="0 0 24 24" width="34" height="34"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></div>
-            <p class="vp-title">Video kêu gọi “Giữ Rừng Có Tiếng”</p>
-            <p class="vp-sub">Video sẽ được cập nhật sau · {{ c.video.duration }}</p>
+        <!-- Khung TV hoạt hình dễ thương (chỉ là vỏ trang trí, video/placeholder nằm trong .tv-screen) -->
+        <div class="toon-tv reveal">
+          <div class="tv-antenna" aria-hidden="true"><span class="ant ant-l"></span><span class="ant ant-r"></span></div>
+          <div class="tv-body">
+            <div class="tv-screen">
+            {% if c.has_video %}
+            <!-- Video thật: đặt file vào static/video/ (tên mặc định campaign.mp4, xem app.py) -->
+            <video controls preload="none" poster="{{ url_for('static', filename=c.video_poster) }}">
+              <source src="{{ url_for('static', filename=c.video.file) }}" type="video/mp4">
+              Trình duyệt của bạn không hỗ trợ phát video.
+            </video>
+            <button type="button" class="tv-play" aria-label="Phát video"><svg viewBox="0 0 24 24" width="38" height="38" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></button>
+            {% else %}
+            <!-- PLACEHOLDER: chưa có file video. Thêm static/video/campaign.mp4 để tự động hiển thị player -->
+            <div class="video-placeholder" style="--poster: url('{{ url_for('static', filename=c.video_poster) }}')">
+              <div class="play" aria-hidden="true"><svg viewBox="0 0 24 24" width="34" height="34"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></div>
+              <p class="vp-title">Video kêu gọi “Giữ Rừng Có Tiếng”</p>
+              <p class="vp-sub">Video sẽ được cập nhật sau · {{ c.video.duration }}</p>
+            </div>
+            {% endif %}
+            </div>
+            <div class="tv-side" aria-hidden="true">
+              <span class="tv-knob k1"></span>
+              <span class="tv-knob k2"></span>
+              <span class="tv-speaker"><i></i><i></i><i></i><i></i></span>
+              <span class="tv-led"></span>
+              <span class="tv-label">TV Tê Tê</span>
+            </div>
           </div>
-          {% endif %}
+          <div class="tv-feet" aria-hidden="true"><span></span><span></span></div>
         </div>
       </div>
     </section>

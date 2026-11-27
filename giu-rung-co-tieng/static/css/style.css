@@ -216,8 +216,64 @@ blockquote { margin: 24px 0; padding: 18px 22px; background: var(--paper); color
 .fund-desc { margin: 10px 0 0; font-size: .98rem; color: var(--ink-soft); }
 
 /* ---------- 12. VIDEO ---------- */
-.video-frame { max-width: 900px; margin: 0 auto; border: var(--bw) solid var(--ink); border-radius: 28px; overflow: hidden; box-shadow: 8px 8px 0 var(--ink); background: var(--ink); aspect-ratio: 16 / 9; }
-.video-frame video { width: 100%; height: 100%; object-fit: cover; background: #000; }
+/* Nút phát tam giác nằm giữa màn hình */
+.tv-play { position: absolute; left: 50%; top: 50%; translate: -50% -50%; z-index: 2; width: 88px; height: 88px; border-radius: 50%; display: grid; place-items: center; padding: 0 0 0 5px; background: var(--sun); color: var(--ink); border: var(--bw) solid var(--ink); box-shadow: var(--shadow); cursor: pointer; transition: scale .15s; }
+.tv-play:hover { scale: 1.08; }
+.tv-play[hidden] { display: none; }
+/* Placeholder: nút tam giác ở chính giữa, chú thích nằm dưới */
+.tv-screen .video-placeholder { position: relative; justify-content: flex-end; padding-bottom: 7%; }
+.tv-screen .video-placeholder .play { position: absolute; left: 50%; top: 50%; translate: -50% -50%; margin: 0; }
+/* Khung TV hoạt hình: vỏ màu hồng, ăng-ten, núm vặn, loa, chân đế; màn hình 16:9 chứa video */
+.toon-tv { position: relative; max-width: 980px; margin: 0 auto; padding: 86px 0 30px; }
+.tv-body { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 104px; gap: 18px; padding: 22px; background: var(--green); border: var(--bw) solid var(--ink); border-radius: 44px 50px 46px 52px / 50px 44px 52px 46px; box-shadow: 9px 9px 0 var(--ink); }
+.tv-body::before { content: ""; position: absolute; inset: 7px; border: 2px dashed rgba(255, 255, 255, .45); border-radius: inherit; pointer-events: none; }
+.tv-screen { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: var(--ink); border: var(--bw) solid var(--ink); border-radius: 30px 34px 30px 36px / 34px 30px 36px 30px; box-shadow: inset 0 0 0 5px rgba(255, 255, 255, .22); }
+.tv-screen video { width: 100%; height: 100%; object-fit: cover; background: #000; }
+.tv-screen::after { content: ""; position: absolute; top: 10px; left: 14px; width: 34%; height: 22%; border-radius: 40px 60px 40px 50px; background: linear-gradient(135deg, rgba(255, 255, 255, .22), rgba(255, 255, 255, 0) 70%); pointer-events: none; }  /* ánh phản chiếu kính */
+.tv-side { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 14px; padding: 6px 0 4px; }
+.tv-knob { position: relative; width: 58px; height: 58px; border-radius: 50%; background: var(--sun); border: var(--bw) solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.tv-knob::after { content: ""; position: absolute; left: 50%; top: 5px; width: 5px; height: 20px; translate: -50% 0; border-radius: 3px; background: var(--ink); transform-origin: 50% 20px; }
+.tv-knob.k1::after { rotate: -35deg; }
+.tv-knob.k2::after { rotate: 50deg; }
+.tv-speaker { display: grid; gap: 7px; width: 58px; }
+.tv-speaker i { display: block; height: 6px; border-radius: 4px; background: var(--ink); }
+.tv-led { width: 16px; height: 16px; border-radius: 50%; background: var(--sun); border: 3px solid var(--ink); }
+.tv-label { padding: 2px 10px; border: 2px solid var(--ink); border-radius: 999px; background: var(--paper); font-family: var(--font-head); font-weight: 800; font-size: .74rem; white-space: nowrap; }
+.tv-feet span { position: absolute; bottom: 0; z-index: 0; width: 64px; height: 36px; background: var(--ink); border-radius: 6px 6px 16px 16px; }
+.tv-feet span:first-child { left: 13%; transform: skewX(12deg); }
+.tv-feet span:last-child { right: 13%; transform: skewX(-12deg); }
+.tv-antenna { position: absolute; left: 50%; top: 92px; width: 0; height: 0; z-index: 0; }
+.ant { position: absolute; bottom: 0; left: -3px; width: 6px; height: 88px; border-radius: 4px; background: var(--ink); transform-origin: 50% 100%; }
+.ant::after { content: ""; position: absolute; top: -12px; left: 50%; width: 20px; height: 20px; translate: -50% 0; border-radius: 50%; background: var(--sun); border: 3px solid var(--ink); }
+.ant-l { rotate: -26deg; }
+.ant-r { rotate: 24deg; }
+@media (prefers-reduced-motion: no-preference) {
+  .ant-l { animation: ant-l 3.4s ease-in-out infinite; }
+  .ant-r { animation: ant-r 3.9s ease-in-out infinite; }
+  .tv-led { animation: led 2.2s ease-in-out infinite; }
+}
+@keyframes ant-l { 0%, 100% { rotate: -26deg; } 50% { rotate: -20deg; } }
+@keyframes ant-r { 0%, 100% { rotate: 24deg; } 50% { rotate: 18deg; } }
+@keyframes led { 0%, 100% { background: var(--sun); } 50% { background: #fff1b8; } }
+@media (max-width: 640px) {
+  .toon-tv { padding-top: 64px; padding-bottom: 24px; }
+  .tv-antenna { top: 70px; }
+  .ant { height: 64px; }
+  .tv-body { grid-template-columns: 1fr; padding: 14px; gap: 12px; border-radius: 30px 34px 32px 36px / 34px 30px 36px 32px; box-shadow: 6px 6px 0 var(--ink); }
+  .tv-screen { border-radius: 20px 24px 20px 26px / 24px 20px 26px 20px; }
+  .tv-side { flex-direction: row; justify-content: center; gap: 14px; padding: 0 0 2px; }
+  .tv-knob { width: 40px; height: 40px; }
+  .tv-knob::after { top: 3px; height: 14px; transform-origin: 50% 14px; }
+  .tv-speaker { width: 44px; gap: 5px; }
+  .tv-label { display: none; }
+  .tv-screen .video-placeholder { gap: 6px; padding: 8px; }
+  .tv-screen .vp-title { font-size: .95rem; padding: 4px 10px; }
+  .tv-screen .vp-sub { display: none; }
+  .tv-screen .play, .tv-play { width: 56px; height: 56px; }
+  .tv-play svg { width: 26px; height: 26px; }
+  .tv-screen .video-placeholder { padding-bottom: 5%; }
+  .tv-feet span { width: 44px; height: 28px; }
+}
 .video-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; background: var(--sky) var(--poster) center bottom / cover no-repeat; }
 .play { width: 88px; height: 88px; border-radius: 50%; display: grid; place-items: center; background: var(--sun); color: var(--ink); border: var(--bw) solid var(--ink); box-shadow: var(--shadow); margin-bottom: 16px; }
 .play svg { margin-left: 4px; }
