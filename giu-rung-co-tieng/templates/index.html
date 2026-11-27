@@ -172,7 +172,7 @@
           </div>
         </div>
       </div>
-    </section>
+</section>
 
     <!-- ================= VẤN ĐỀ ================= -->
     <section class="section has-roam" id="problem" data-nav="#problem" data-label="Vấn đề">
@@ -245,14 +245,15 @@
           </span>
         </button>
       </div>
-    </section>
+</section>
 
     <!-- ================= CÂU CHUYỆN CỦA DỰ ÁN ================= -->
     <section class="story after-cream has-roam" id="story" data-nav="#problem" data-label="Câu chuyện">
       <div class="container story-grid">
-        <div class="story-media reveal">
-          <!-- Đổi ảnh: c.images.story trong app.py -->
-          <img src="{{ url_for('static', filename=c.images.story) }}" alt="Cảnh rừng lúc hoàng hôn, minh hoạ cho câu chuyện của dự án" loading="lazy" width="600" height="450">
+        <div class="story-media reveal{% if c.story_image.custom %} story-media-photo{% endif %}">
+          <!-- Chèn ảnh/poster: đặt file static/images/story/story-poster.jpg (xem STORY_IMAGE trong app.py). Chưa có thì dùng ảnh vẽ cũ. -->
+          <img src="{{ url_for('static', filename=c.story_image.src) }}" alt="{{ c.story_image.alt }}" loading="lazy"{% if not c.story_image.custom %} width="600" height="450"{% endif %}>
+          {% if c.story_image.credit %}<p class="story-credit">{{ c.story_image.credit }}</p>{% endif %}
         </div>
         <div class="story-copy reveal">
           <p class="eyebrow">Câu chuyện của dự án</p>
@@ -392,13 +393,13 @@
         <div class="video-frame reveal">
           {% if c.has_video %}
           <!-- Video thật: đặt file vào static/video/ (tên mặc định campaign.mp4, xem app.py) -->
-          <video controls preload="none" poster="{{ url_for('static', filename=c.video.poster) }}">
+          <video controls preload="none" poster="{{ url_for('static', filename=c.video_poster) }}">
             <source src="{{ url_for('static', filename=c.video.file) }}" type="video/mp4">
             Trình duyệt của bạn không hỗ trợ phát video.
           </video>
           {% else %}
           <!-- PLACEHOLDER: chưa có file video. Thêm static/video/campaign.mp4 để tự động hiển thị player -->
-          <div class="video-placeholder" style="--poster: url('{{ url_for('static', filename=c.video.poster) }}')">
+          <div class="video-placeholder" style="--poster: url('{{ url_for('static', filename=c.video_poster) }}')">
             <div class="play" aria-hidden="true"><svg viewBox="0 0 24 24" width="34" height="34"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></div>
             <p class="vp-title">Video kêu gọi “Giữ Rừng Có Tiếng”</p>
             <p class="vp-sub">Video sẽ được cập nhật sau · {{ c.video.duration }}</p>
@@ -525,7 +526,7 @@
           </ol>
           <ul class="src-notes">
             <li>Thông tin về tê tê trên trang nhằm mục đích giáo dục và nâng cao nhận thức.</li>
-            <li>Hình ảnh trên trang là tranh minh hoạ, không phải ảnh tư liệu về tình trạng hay hoạt động cứu hộ thực tế của tê tê.</li>
+            <li>Phần lớn hình ảnh trên trang là tranh minh hoạ, không phải ảnh tư liệu về tình trạng hay hoạt động cứu hộ thực tế của tê tê. Poster ở phần Câu chuyện thuộc về Bảo tàng Thiên nhiên Duyên hải miền Trung (Sở Khoa học và Công nghệ TP. Huế), được dùng cho mục đích học tập.</li>
             <li>Một phần ý tưởng nội dung được phác thảo với sự hỗ trợ của công cụ AI, sau đó được chọn lọc, chỉnh sửa và đối chiếu với các nguồn ở trên.</li>
           </ul>
           <!-- TODO: ghi nguồn/ tác giả của các hình ảnh đã dùng (tê tê hero, tê tê cuộn tròn, tê tê đứng) tại đây nếu cần -->
